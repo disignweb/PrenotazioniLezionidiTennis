@@ -1,14 +1,17 @@
-// ⚠️ METTI QUI IL TUO NUMERO REALE (Es: "393331234567" senza + e senza spazi)
+// ⚠️ INSERISCI QUI IL TUO NUMERO REALE (Es: "393331234567" senza + e senza spazi)
 const TUO_NUMERO_WHATSAPP = "393398827687"; 
 
 const tipoLezioneSelect = document.querySelector("#tipoLezione");
 const gruppoPartecipanti = document.querySelector("#gruppoPartecipanti");
 const campoSelect = document.querySelector("#campo");
 const dataOrarioInput = document.querySelector("#dataOrarioDesiderato");
-const form = document.querySelector("#formTennis");
+const nomeInput = document.querySelector("#nome");
+const telefonoInput = document.querySelector("#telefono");
+const partecipantiInput = document.querySelector("#partecipanti");
+const confermaCertificato = document.querySelector("#confermaCertificato");
+const btnInviaWhatsApp = document.querySelector("#btnInviaWhatsApp");
 const alertMessaggio = document.querySelector("#alertMessaggio");
 const contenitoreLista = document.querySelector("#contenitoreLista");
-const btnWhatsApp = document.querySelector("#btnWhatsApp");
 
 tipoLezioneSelect.addEventListener("change", function() {
     if (tipoLezioneSelect.value === "Gruppo") {
@@ -52,26 +55,24 @@ function eliminaRichiesta(index) {
     caricaRichieste();
 }
 
-form.addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    // Validazione base dei campi compilati
-    const nomeUtente = document.querySelector("#nome").value;
-    const telefonoUtente = document.querySelector("#telefono").value;
-    const orarioDesiderato = dataOrarioInput.value;
-
-    if (!nomeUtente || !telefonoUtente || !orarioDesiderato) {
-        alert("Per favore compila tutti i campi obbligatori prima di procedere.");
+// Gestione diretta del click sul pulsante (senza ricaricare la pagina)
+btnInviaWhatsApp.addEventListener("click", function() {
+    // Validazione dei campi obbligatori
+    if (!nomeInput.value || !telefonoInput.value || !campoSelect.value || !dataOrarioInput.value || !confermaCertificato.checked) {
+        alert("Per favore, compila tutti i campi obbligatori e spunta la casella del regolamento medico.");
         return;
     }
 
     const tipoLezione = tipoLezioneSelect.value;
-    const altriPartecipanti = document.querySelector("#partecipanti").value;
+    const nomeUtente = nomeInput.value;
+    const telefonoUtente = telefonoInput.value;
+    const altriPartecipanti = partecipantiInput.value;
     const campoScelto = campoSelect.value;
+    const orarioDesiderato = dataOrarioInput.value;
 
     let richieste = JSON.parse(localStorage.getItem("richiesteCampiTerra")) || [];
 
-    const nuevaRichiesta = {
+    const nuovaRichiesta = {
         tipo: tipoLezione,
         nome: nomeUtente,
         telefono: telefonoUtente,
@@ -80,7 +81,7 @@ form.addEventListener("submit", function(event) {
         orarioDesiderato: orarioDesiderato
     };
 
-    richieste.push(nuevaRichiesta);
+    richieste.push(nuovaRichiesta);
     localStorage.setItem("richiesteCampiTerra", JSON.stringify(richieste));
 
     // Costruzione messaggio WhatsApp
@@ -97,12 +98,25 @@ form.addEventListener("submit", function(event) {
         `✅ *Certificato Medico:* Dichiarato presente`
     );
 
-    // Assegna il link corretto al pulsante WhatsApp nativo
-    btnWhatsApp.href = `https://wa.me/${TUO_NUMERO_WHATSAPP}?text=${testoMessaggio}`;
+    // Apre direttamente WhatsApp
+    const urlWhatsApp = `https://wa.me/${TUO_NUMERO_WHATSAPP}?text=${testoMessaggio}`;
+    window.open(urlWhatsApp, '_blank');
 
     alertMessaggio.style.display = "block";
-    form.reset();
+    setTimeout(() => {
+        alertMessaggio.style.display = "none";
+    }, 4000);
+
+    // Pulisce i campi
+    nomeInput.value = "";
+    telefonoInput.value = "";
+    partecipantiInput.value = "";
+    dataOrarioInput.value = "";
+    confermaCertificato.checked = false;
     gruppoPartecipanti.style.display = "none";
+    campoSelect.selectedIndex = 0;
+    tipoLezioneSelect.selectedIndex = 0;
+
     caricaRichieste();
 });
 
