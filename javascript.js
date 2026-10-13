@@ -1,6 +1,5 @@
 // ⚠️ INSERISCI QUI IL TUO NUMERO DI TELEFONO CON IL PREFISSO INTERNAZIONALE (es. 39 per l'Italia)
-// Esempio: "393401234567"
-const TUO_NUMERO_WHATSAPP = "393398827687"; 
+const TUO_NUMERO_WHATSAPP = "390000000000"; 
 
 const tipoLezioneSelect = document.querySelector("#tipoLezione");
 const gruppoPartecipanti = document.querySelector("#gruppoPartecipanti");
@@ -34,8 +33,8 @@ tipoLezioneSelect.addEventListener("change", function() {
     }
 });
 
-// Cambio orari dinamico in base al campo
-campoSelect.addEventListener("change", function() {
+// Funzione per aggiornare gli orari in base al campo selezionato
+function aggiornaOrari() {
     const campo = campoSelect.value;
     orarioSelect.innerHTML = '<option value="">-- Scegli orario --</option>';
 
@@ -52,7 +51,10 @@ campoSelect.addEventListener("change", function() {
         option.textContent = orario;
         orarioSelect.appendChild(option);
     });
-});
+}
+
+// Aggiorna gli orari ogni volta che l'utente cambia campo nel menu a tendina
+campoSelect.addEventListener("change", aggiornaOrari);
 
 function caricaPrenotazioni() {
     let prenotazioni = JSON.parse(localStorage.getItem("prenotazioniCampiTerra")) || [];
