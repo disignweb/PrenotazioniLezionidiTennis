@@ -139,20 +139,25 @@ input[type="text"], input[type="tel"], select {
     line-height: 1.4;
 }
 
-button {
+/* Stile del link WhatsApp trasformato in pulsante */
+.btn-whatsapp {
+    display: block;
     background-color: #27ae60;
     color: white;
     border: none;
     padding: 14px 20px;
     font-size: 17px;
     border-radius: 6px;
-    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
     width: 100%;
+    box-sizing: border-box;
     font-weight: bold;
     transition: background 0.2s;
+    cursor: pointer;
 }
 
-button:hover {
+.btn-whatsapp:hover {
     background-color: #219150;
 }
 
