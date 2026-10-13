@@ -1,4 +1,4 @@
-// ⚠️ INSERISCI QUI IL TUO NUMERO DI TELEFONO CON IL PREFISSO INTERNAZIONALE (es. 39 per l'Italia)
+// ⚠️ INSERISCI QUI IL TUO NUMERO REALE (Es. "393331234567" senza + e senza spazi)
 const TUO_NUMERO_WHATSAPP = "393398827687"; 
 
 const tipoLezioneSelect = document.querySelector("#tipoLezione");
@@ -9,7 +9,6 @@ const form = document.querySelector("#formTennis");
 const alertMessaggio = document.querySelector("#alertMessaggio");
 const contenitoreLista = document.querySelector("#contenitoreLista");
 
-// Mostra o nasconde il campo per inserire i nomi del gruppo
 tipoLezioneSelect.addEventListener("change", function() {
     if (tipoLezioneSelect.value === "Gruppo") {
         gruppoPartecipanti.style.display = "block";
@@ -76,7 +75,7 @@ form.addEventListener("submit", function(event) {
     richieste.push(nuovaRichiesta);
     localStorage.setItem("richiesteCampiTerra", JSON.stringify(richieste));
 
-    // Costruzione del messaggio WhatsApp
+    // Costruzione messaggio WhatsApp
     let testoPartecipanti = tipoLezione === "Gruppo" ? `\n👥 *Altri Partecipanti:* ${altriPartecipanti}` : '';
     let costoStimato = tipoLezione === "Singola" ? "30€" : "15€ a persona";
 
@@ -91,16 +90,9 @@ form.addEventListener("submit", function(event) {
     );
 
     const urlWhatsApp = `https://wa.me/${TUO_NUMERO_WHATSAPP}?text=${testoMessaggio}`;
-    window.open(urlWhatsApp, '_blank');
-
-    alertMessaggio.style.display = "block";
-    setTimeout(() => {
-        alertMessaggio.style.display = "none";
-    }, 3500);
-
-    form.reset();
-    gruppoPartecipanti.style.display = "none";
-    caricaRichieste();
+    
+    // REINDIRIZZAMENTO DIRETTO (Evita il blocco pop-up del browser)
+    window.location.href = urlWhatsApp;
 });
 
 caricaRichieste();
