@@ -45,7 +45,7 @@
         <!-- Modulo di Prenotazione -->
         <section class="card form-card">
             <h2>📅 Richiedi la tua Lezione o Campo</h2>
-            <form id="formTennis">
+            <div id="formTennis">
                 <div class="form-group">
                     <label for="tipoLezione">Tipo di Lezione:</label>
                     <select id="tipoLezione" required>
@@ -93,11 +93,11 @@
                     <label for="confermaCertificato">Dichiaro che tutti i partecipanti sono in possesso del certificato medico in corso di validità e accetto la regola della disdetta entro 3 giorni.</label>
                 </div>
 
-                <!-- Link nativo WhatsApp camuffato da pulsante -->
-                <a id="btnWhatsApp" href="#" target="_blank" class="btn-whatsapp">🎾 Invia Richiesta su WhatsApp</a>
-            </form>
+                <!-- Pulsante interattivo diretto -->
+                <button type="button" id="btnInviaWhatsApp" class="btn-whatsapp">🎾 Invia Richiesta su WhatsApp</button>
+            </div>
 
-            <div id="alertMessaggio" class="messaggio">✅ Richiesta salvata! Clicca sul pulsante WhatsApp per inviarla.</div>
+            <div id="alertMessaggio" class="messaggio">✅ Richiesta salvata nel browser!</div>
         </section>
 
         <!-- Sezione Richieste Salvate Locale -->
