@@ -4,26 +4,10 @@ const TUO_NUMERO_WHATSAPP = "393398827687";
 const tipoLezioneSelect = document.querySelector("#tipoLezione");
 const gruppoPartecipanti = document.querySelector("#gruppoPartecipanti");
 const campoSelect = document.querySelector("#campo");
-const orarioSelect = document.querySelector("#orario");
+const dataOrarioInput = document.querySelector("#dataOrarioDesiderato");
 const form = document.querySelector("#formTennis");
 const alertMessaggio = document.querySelector("#alertMessaggio");
 const contenitoreLista = document.querySelector("#contenitoreLista");
-
-// Orari distinti per i campi (Campi 1 e 3: 9:30 - 22:30)
-const orariCampo1e3 = [
-    "09:30 - 10:30", "10:30 - 11:30", "11:30 - 12:30", 
-    "12:30 - 13:30", "13:30 - 14:30", "14:30 - 15:30", 
-    "15:30 - 16:30", "16:30 - 17:30", "17:30 - 18:30", 
-    "18:30 - 19:30", "19:30 - 20:30", "20:30 - 21:30", "21:30 - 22:30"
-];
-
-// Orari distinti per i campi (Campi 2 e 4: 9:00 - 22:00)
-const orariCampo2e4 = [
-    "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", 
-    "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00", 
-    "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00", 
-    "18:00 - 19:00", "19:00 - 20:00", "20:00 - 21:00", "21:00 - 22:00"
-];
 
 // Mostra o nasconde il campo per inserire i nomi del gruppo
 tipoLezioneSelect.addEventListener("change", function() {
@@ -34,62 +18,38 @@ tipoLezioneSelect.addEventListener("change", function() {
     }
 });
 
-// Funzione centrale per popolare gli orari in base al campo scelto
-function aggiornaOrari() {
-    const campo = campoSelect.value;
-    orarioSelect.innerHTML = '<option value="">-- Scegli orario --</option>';
+function caricaRichieste() {
+    let richieste = JSON.parse(localStorage.getItem("richiesteCampiTerra")) || [];
 
-    let orariDisponibili = [];
-    if (campo === "Campo 1" || campo === "Campo 3") {
-        orariDisponibili = orariCampo1e3;
-    } else if (campo === "Campo 2" || campo === "Campo 4") {
-        orariDisponibili = orariCampo2e4;
-    }
-
-    orariDisponibili.forEach(orario => {
-        const option = document.createElement("option");
-        option.value = orario;
-        option.textContent = orario;
-        orarioSelect.appendChild(option);
-    });
-}
-
-// Ascolta il cambio di selezione sul campo
-campoSelect.addEventListener("change", aggiornaOrari);
-campoSelect.addEventListener("input", aggiornaOrari);
-
-function caricaPrenotazioni() {
-    let prenotazioni = JSON.parse(localStorage.getItem("prenotazioniCampiTerra")) || [];
-
-    if (prenotazioni.length === 0) {
-        contenitoreLista.innerHTML = "<p style='color: #7f8c8d;'>Nessuna prenotazione attiva sul browser.</p>";
+    if (richieste.length === 0) {
+        contenitoreLista.innerHTML = "<p style='color: #7f8c8d;'>Nessuna richiesta attiva nel browser.</p>";
         return;
     }
 
     contenitoreLista.innerHTML = "";
-    prenotazioni.forEach((p, index) => {
+    richieste.forEach((r, index) => {
         const div = document.createElement("div");
         div.className = "item-prenotazione";
         
-        let dettaglioMembri = p.tipo === "Gruppo" && p.partecipanti ? `<br><small>👥 Gruppo con: ${p.partecipanti}</small>` : '';
-        let telUtente = p.telefono ? `<br><small>📞 Tel: ${p.telefono}</small>` : '';
+        let dettaglioMembri = r.tipo === "Gruppo" && r.partecipanti ? `<br><small>👥 Gruppo con: ${r.partecipanti}</small>` : '';
+        let telUtente = r.telefono ? `<br><small>📞 Tel: ${r.telefono}</small>` : '';
 
         div.innerHTML = `
             <div>
-                <strong>${p.nome}</strong> (${p.tipo === 'Singola' ? 'Singola 30€' : 'Gruppo 15€/cad.'})${telUtente}${dettaglioMembri}<br>
-                <span>🏟️ ${p.campo} | ⏰ ${p.orario}</span>
+                <strong>${r.nome}</strong> (${r.tipo === 'Singola' ? 'Singola 30€' : 'Gruppo 15€/cad.'})${telUtente}${dettaglioMembri}<br>
+                <span>🏟️ ${r.campo} | ⏰ ${r.orarioDesiderato}</span>
             </div>
-            <button class="btn-cancella" onclick="eliminaPrenotazione(${index})">Elimina</button>
+            <button class="btn-cancella" onclick="eliminaRichiesta(${index})">Elimina</button>
         `;
         contenitoreLista.appendChild(div);
     });
 }
 
-function eliminaPrenotazione(index) {
-    let prenotazioni = JSON.parse(localStorage.getItem("prenotazioniCampiTerra")) || [];
-    prenotazioni.splice(index, 1);
-    localStorage.setItem("prenotazioniCampiTerra", JSON.stringify(prenotazioni));
-    caricaPrenotazioni();
+function eliminaRichiesta(index) {
+    let richieste = JSON.parse(localStorage.getItem("richiesteCampiTerra")) || [];
+    richieste.splice(index, 1);
+    localStorage.setItem("richiesteCampiTerra", JSON.stringify(richieste));
+    caricaRichieste();
 }
 
 form.addEventListener("submit", function(event) {
@@ -100,41 +60,33 @@ form.addEventListener("submit", function(event) {
     const telefonoUtente = document.querySelector("#telefono").value;
     const altriPartecipanti = document.querySelector("#partecipanti").value;
     const campoScelto = campoSelect.value;
-    const orarioScelto = orarioSelect.value;
+    const orarioDesiderato = dataOrarioInput.value;
 
-    let prenotazioni = JSON.parse(localStorage.getItem("prenotazioniCampiTerra")) || [];
+    let richieste = JSON.parse(localStorage.getItem("richiesteCampiTerra")) || [];
 
-    // Controllo disponibilità
-    const giaOccupato = prenotazioni.some(p => p.campo === campoScelto && p.orario === orarioScelto);
-
-    if (giaOccupato) {
-        alert("Attenzione: Questo campo risulta già occupato in questo orario!");
-        return;
-    }
-
-    const nuovaPrenotazione = {
+    const nuovaRichiesta = {
         tipo: tipoLezione,
         nome: nomeUtente,
         telefono: telefonoUtente,
         partecipanti: altriPartecipanti,
         campo: campoScelto,
-        orario: orarioScelto
+        orarioDesiderato: orarioDesiderato
     };
 
-    prenotazioni.push(nuovaPrenotazione);
-    localStorage.setItem("prenotazioniCampiTerra", JSON.stringify(prenotazioni));
+    richieste.push(nuovaRichiesta);
+    localStorage.setItem("richiesteCampiTerra", JSON.stringify(richieste));
 
     // Costruzione del messaggio WhatsApp
     let testoPartecipanti = tipoLezione === "Gruppo" ? `\n👥 *Altri Partecipanti:* ${altriPartecipanti}` : '';
     let costoStimato = tipoLezione === "Singola" ? "30€" : "15€ a persona";
 
     const testoMessaggio = encodeURIComponent(
-        `🎾 *NUOVA PRENOTAZIONE LEZIONE TENNIS* 🎾\n\n` +
+        `🎾 *NUOVA RICHIESTA LEZIONE TENNIS* 🎾\n\n` +
         `📖 *Tipo Lezione:* ${tipoLezione} (${costoStimato})\n` +
         `👤 *Referente:* ${nomeUtente}\n` +
         `📞 *Telefono:* ${telefonoUtente}${testoPartecipanti}\n` +
-        `🏟️ *Campo:* ${campoScelto}\n` +
-        `⏰ *Orario:* ${orarioScelto}\n` +
+        `🏟️ *Campo Preferito:* ${campoScelto}\n` +
+        `⏰ *Quando lo desidera:* ${orarioDesiderato}\n` +
         `✅ *Certificato Medico:* Dichiarato presente`
     );
 
@@ -148,8 +100,7 @@ form.addEventListener("submit", function(event) {
 
     form.reset();
     gruppoPartecipanti.style.display = "none";
-    orarioSelect.innerHTML = '<option value="">-- Prima seleziona un campo --</option>';
-    caricaPrenotazioni();
+    caricaRichieste();
 });
 
-caricaPrenotazioni();
+caricaRichieste();
