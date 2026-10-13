@@ -1,5 +1,5 @@
 // ⚠️ INSERISCI QUI IL TUO NUMERO DI TELEFONO CON IL PREFISSO INTERNAZIONALE (es. 39 per l'Italia)
-const TUO_NUMERO_WHATSAPP = "390000000000"; 
+const TUO_NUMERO_WHATSAPP = "393398827687"; 
 
 const tipoLezioneSelect = document.querySelector("#tipoLezione");
 const gruppoPartecipanti = document.querySelector("#gruppoPartecipanti");
@@ -9,7 +9,7 @@ const form = document.querySelector("#formTennis");
 const alertMessaggio = document.querySelector("#alertMessaggio");
 const contenitoreLista = document.querySelector("#contenitoreLista");
 
-// Orari distinti per i campi
+// Orari distinti per i campi (Campi 1 e 3: 9:30 - 22:30)
 const orariCampo1e3 = [
     "09:30 - 10:30", "10:30 - 11:30", "11:30 - 12:30", 
     "12:30 - 13:30", "13:30 - 14:30", "14:30 - 15:30", 
@@ -17,6 +17,7 @@ const orariCampo1e3 = [
     "18:30 - 19:30", "19:30 - 20:30", "20:30 - 21:30", "21:30 - 22:30"
 ];
 
+// Orari distinti per i campi (Campi 2 e 4: 9:00 - 22:00)
 const orariCampo2e4 = [
     "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", 
     "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00", 
@@ -33,7 +34,7 @@ tipoLezioneSelect.addEventListener("change", function() {
     }
 });
 
-// Funzione per aggiornare gli orari in base al campo selezionato
+// Funzione centrale per popolare gli orari in base al campo scelto
 function aggiornaOrari() {
     const campo = campoSelect.value;
     orarioSelect.innerHTML = '<option value="">-- Scegli orario --</option>';
@@ -53,8 +54,9 @@ function aggiornaOrari() {
     });
 }
 
-// Aggiorna gli orari ogni volta che l'utente cambia campo nel menu a tendina
+// Ascolta il cambio di selezione sul campo
 campoSelect.addEventListener("change", aggiornaOrari);
+campoSelect.addEventListener("input", aggiornaOrari);
 
 function caricaPrenotazioni() {
     let prenotazioni = JSON.parse(localStorage.getItem("prenotazioniCampiTerra")) || [];
