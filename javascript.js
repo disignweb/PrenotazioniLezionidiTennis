@@ -1,5 +1,5 @@
 // ⚠️ METTI QUI IL TUO NUMERO REALE (Es: "393331234567" senza + e senza spazi)
-const TUO_NUMERO_WHATSAPP = "393331234567"; 
+const TUO_NUMERO_WHATSAPP = "393398827687"; 
 
 const tipoLezioneSelect = document.querySelector("#tipoLezione");
 const gruppoPartecipanti = document.querySelector("#gruppoPartecipanti");
