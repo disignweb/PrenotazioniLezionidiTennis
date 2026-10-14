@@ -1,107 +1,106 @@
-<!-- Intestazione -->
 <!DOCTYPE html>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="style.css">
-<html lang="en">
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Club - Passaggio 1: Iscrizione Atleta 🎾</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <!-- Intestazione -->
     <header class="header-club">
         <h1>🎾 Tennis Club</h1>
-        <p>4 Campi in Terra Rossa • Scuola Tennis • Prenotazione Online</p>
+        <p>Passaggio 1 di 2: Compilazione Dati & Certificato Medico</p>
     </header>
+
+    <!-- Navbar con stato di avanzamento -->
+    <nav class="navbar">
+        <a href="index.html" class="active">1. Iscrizione Atleta (Obbligatoria)</a>
+        <a href="#" class="disabled-link" title="Completa prima l'iscrizione">2. Prenota Lezione 🔒</a>
+        <a href="chi-siamo.html">Chi Siamo</a>
+        <a href="tornei.html">Tornei</a>
+        <a href="contatti.html">Contatti</a>
+    </nav>
 
     <div class="container">
 
         <!-- Sezione Regole e Requisiti -->
         <section class="card alert-card">
-            <h2>⚠️ Regole Importanti prima di prenotare</h2>
-            <ul>
-                <li><strong>Certificato Medico Obbligatorio:</strong> È tassativamente richiesto un certificato medico in corso di validità prima di iniziare qualsiasi lezione o attività in campo. Senza di esso non sarà possibile scendere in campo.</li>
-                <li><strong>Politica di Disdetta:</strong> Per disdire o spostare una lezione/campo già prenotato, è necessario avvisare almeno <strong>3 giorni prima</strong> dalla data stabilita. In caso contrario, la quota verrà addebitata interamente.</li>
-            </ul>
+            <h2>⚠️ Attenzione</h2>
+            <p>Per poter prenotare le lezioni di tennis è **obbligatorio** prima completare la scheda d'iscrizione sottostante e allegare la foto o il PDF del **Certificato Medico** in corso di validità.</p>
         </section>
 
-        <!-- Sezione Tariffe e Info Lezioni -->
-        <section class="card info-card">
-            <h2>💶 Tariffe Lezioni Tennis</h2>
-            <div class="tariffe-grid">
-                <div class="tariffa-item">
-                    <h3>Lezione Singola</h3>
-                    <p class="prezzo">30€ / ora</p>
-                    <span>1 Giocatore con Maestro</span>
-                </div>
-                <div class="tariffa-item">
-                    <h3>Lezione di Gruppo</h3>
-                    <p class="prezzo">15€ a persona / ora</p>
-                    <span>Inserire i nomi di tutti i partecipanti</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Modulo di Prenotazione -->
+        <!-- Modulo Iscrizione Atleta -->
         <section class="card form-card">
-            <h2>📅 Richiedi la tua Lezione o Campo</h2>
-            <form id="formTennis">
+            <h2>👤 Scheda Dati Anagrafici Atleta</h2>
+            <form id="formIscrizione">
+                
                 <div class="form-group">
-                    <label for="tipoLezione">Tipo di Lezione:</label>
-                    <select id="tipoLezione" required>
-                        <option value="Singola">Lezione Singola (30€)</option>
-                        <option value="Gruppo">Lezione di Gruppo (15€ / persona)</option>
+                    <label for="nomeAtleta">Nome e Cognome Atleta:*</label>
+                    <input type="text" id="nomeAtleta" required placeholder="Es. Mario Rossi">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="codiceFiscale">Codice Fiscale:*</label>
+                        <input type="text" id="codiceFiscale" required placeholder="Es. RSSMRA80A01H501U" style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-group col">
+                        <label for="dataNascita">Data di Nascita:*</label>
+                        <input type="date" id="dataNascita" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="telefono">Numero di Telefono / WhatsApp:*</label>
+                        <input type="tel" id="telefono" required placeholder="Es. 333 1234567">
+                    </div>
+                    <div class="form-group col">
+                        <label for="email">Indirizzo Email:*</label>
+                        <input type="email" id="email" required placeholder="Es. mario.rossi@email.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="indirizzo">Indirizzo di Residenza:*</label>
+                    <input type="text" id="indirizzo" required placeholder="Via, Civico, Città, CAP">
+                </div>
+
+                <div class="form-group">
+                    <label for="livelloTennis">Livello di Gioco:*</label>
+                    <select id="livelloTennis" required>
+                        <option value="">-- Seleziona Livello --</option>
+                        <option value="Principiante Assoluto">Principiante Assoluto</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Avanzato / Agonista">Avanzato / Agonista</option>
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="nome">Nome e Cognome Referente:</label>
-                    <input type="text" id="nome" required placeholder="Es. Mario Rossi">
-                </div>
-
-                <div class="form-group">
-                    <label for="telefono">Numero di Telefono (per essere ricontattato):</label>
-                    <input type="tel" id="telefono" required placeholder="Es. 333 1234567">
-                </div>
-
-                <!-- Campo dinamico per i partecipanti del gruppo -->
-                <div class="form-group" id="gruppoPartecipanti" style="display: none;">
-                    <label for="partecipanti">Nomi degli altri Partecipanti del Gruppo:</label>
-                    <input type="text" id="partecipanti" placeholder="Es. Luca Bianchi, Marco Verdi, Anna Neri">
-                    <small>Inserisci i nomi separati da virgola</small>
-                </div>
-
-                <div class="form-group">
-                    <label for="campo">Seleziona Campo Preferito (Terra Rossa):</label>
-                    <select id="campo" required>
-                        <option value="">-- Scegli Campo --</option>
-                        <option value="Campo 1">Campo 1 (dalle 9:30 alle 22:30)</option>
-                        <option value="Campo 2">Campo 2 (dalle 9:00 alle 22:00)</option>
-                        <option value="Campo 3">Campo 3 (dalle 9:30 alle 22:30)</option>
-                        <option value="Campo 4">Campo 4 (dalle 9:00 alle 22:00)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="dataOrarioDesiderato">Giorno e Orario Desiderato:</label>
-                    <input type="text" id="dataOrarioDesiderato" required placeholder="Es. Giovedì prossimo alle ore 16:00">
-                    <small>Scrivi liberamente il giorno e l'orario che preferisci</small>
+                <!-- Caricamento Certificato Medico (PDF o Foto) -->
+                <div class="form-group upload-box">
+                    <label for="certificatoMedico">📁 Carica Certificato Medico (PDF o Foto dal cellulare):*</label>
+                    <input type="file" id="certificatoMedico" accept="image/*,application/pdf" capture="environment" required>
+                    <small>Scatta una foto nitida con lo smartphone o seleziona un file PDF.</small>
+                    <div id="filePreview" class="file-preview"></div>
                 </div>
 
                 <div class="form-group checkbox-group">
-                    <input type="checkbox" id="confermaCertificato" required>
-                    <label for="confermaCertificato">Dichiaro che tutti i partecipanti sono in possesso del certificato medico in corso di validità e accetto la regola della disdetta entro 3 giorni.</label>
+                    <input type="checkbox" id="consensoPrivacy" required>
+                    <label for="consensoPrivacy">Dichiaro che i dati forniti e il certificato allegato sono veritieri ed esatti. Autorizzo il trattamento dei dati personali.</label>
                 </div>
 
-                <button type="submit" class="btn-telegram">✈️ Invia Richiesta tramite Telegram</button>
+                <button type="submit" class="btn-telegram">🚀 Invia Iscrizione e Vai alla Prenotazione ➡️</button>
             </form>
 
-            <div id="alertMessaggio" class="messaggio" style="display: none;">✅ Richiesta inviata con successo al Tennis Club! Ti ricontatteremo presto.</div>
-        </section>
-
-        <!-- Sezione Richieste Salvate Locale -->
-        <section class="card lista-prenotazioni">
-            <h3>📋 Le tue richieste salvate in questo browser:</h3>
-            <div id="contenitoreLista">Nessuna richiesta attiva.</div>
+            <div id="alertMessaggio" class="messaggio" style="display: none;">
+                ✅ Iscrizione inviata con successo! Reindirizzamento alla pagina prenotazioni in corso...
+            </div>
         </section>
 
     </div>
 
     <script src="script.js"></script>
-
+</body>
 </html>
