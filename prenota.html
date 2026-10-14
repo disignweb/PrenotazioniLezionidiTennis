@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Club - Passaggio 2: Prenota Lezione 🎾</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Intestazione -->
+    <header class="header-club">
+        <h1>🎾 Tennis Club</h1>
+        <p>Passaggio 2 di 2: Prenotazione Lezione di Tennis</p>
+    </header>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html">1. Modifica Iscrizione</a>
+        <a href="prenota.html" class="active">2. Prenota Lezione</a>
+        <a href="chi-siamo.html">Chi Siamo</a>
+        <a href="tornei.html">Tornei</a>
+        <a href="contatti.html">Contatti</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Banner Benvenuto Atleta -->
+        <section class="card alert-card" id="bannerBenvenuto">
+            <h2>👋 Benvenuto!</h2>
+            <p id="testoAtletaConfermato">Iscrizione confermata. Ora puoi scegliere la data e l'ora per la tua lezione.</p>
+        </section>
+
+        <!-- Sezione Tariffe -->
+        <section class="card info-card">
+            <h2>💶 Tariffe Lezioni Tennis</h2>
+            <div class="tariffe-grid">
+                <div class="tariffa-item">
+                    <h3>Lezione Singola</h3>
+                    <p class="prezzo">30€ / ora</p>
+                    <span>1 Giocatore con Maestro</span>
+                </div>
+                <div class="tariffa-item">
+                    <h3>Lezione di Gruppo</h3>
+                    <p class="prezzo">15€ a persona / ora</p>
+                    <span>Specifica i nomi del gruppo</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modulo di Prenotazione Semplificato -->
+        <section class="card form-card">
+            <h2>📅 Richiedi la tua Lezione</h2>
+            <form id="formPrenotazione">
+                
+                <div class="form-group">
+                    <label for="tipoLezione">Tipo di Lezione:</label>
+                    <select id="tipoLezione" required>
+                        <option value="Singola">Lezione Singola (30€)</option>
+                        <option value="Gruppo">Lezione di Gruppo (15€ / persona)</option>
+                    </select>
+                </div>
+
+                <!-- Campo dinamico per i partecipanti del gruppo -->
+                <div class="form-group" id="gruppoPartecipanti" style="display: none;">
+                    <label for="partecipanti">Nomi degli altri Partecipanti del Gruppo:</label>
+                    <input type="text" id="partecipanti" placeholder="Es. Luca Bianchi, Marco Verdi">
+                    <small>Inserisci i nomi separati da virgola</small>
+                </div>
+
+                <!-- Solamente Data e Ora (Senza campo) -->
+                <div class="form-group">
+                    <label for="dataOrarioDesiderato">Giorno e Orario Desiderato:*</label>
+                    <input type="text" id="dataOrarioDesiderato" required placeholder="Es. Giovedì 15 Maggio alle ore 17:30">
+                    <small>Scrivi liberamente la data e l'orario in cui vorresti giocare.</small>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="confermaDisdetta" required>
+                    <label for="confermaDisdetta">Accetto la regola della disdetta/spostamento entro almeno 3 giorni prima dell'orario stabilito.</label>
+                </div>
+
+                <button type="submit" class="btn-telegram">✈️ Invia Richiesta Prenotazione</button>
+            </form>
+
+            <div id="alertMessaggio" class="messaggio" style="display: none;">
+                ✅ Richiesta inviata con successo al Tennis Club! Ti invieremo una conferma a breve.
+            </div>
+        </section>
+
+        <!-- Sezione Storico Prenotazioni -->
+        <section class="card lista-prenotazioni">
+            <h3>📋 Le tue prenotazioni inviate:</h3>
+            <div id="contenitoreLista">Nessuna prenotazione attiva.</div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
