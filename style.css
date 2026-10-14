@@ -208,3 +208,12 @@ flex-direction: column;
     opacity: 0.6;
     pointer-events: none;
 }
+
+.regola-pagamento-box {
+    margin-top: 15px;
+    padding: 12px 15px;
+    background-color: #eef9ff;
+    border-left: 4px solid #3498db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #2c3e50;
