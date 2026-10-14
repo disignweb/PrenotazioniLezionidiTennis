@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tennis Club - Passaggio 2: Prenota Lezione 🎾</title>
+    <title>Tennis Class - Passaggio 2: Prenota Lezione 🎾</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- Intestazione -->
     <header class="header-club">
-        <h1>🎾 Tennis Club</h1>
+        <h1>🎾 Tennis Class</h1>
         <p>Passaggio 2 di 2: Prenotazione Lezione di Tennis</p>
     </header>
 
@@ -18,9 +18,6 @@
     <nav class="navbar">
         <a href="index.html">1. Modifica Iscrizione</a>
         <a href="prenota.html" class="active">2. Prenota Lezione</a>
-        <a href="chi-siamo.html">Chi Siamo</a>
-        <a href="tornei.html">Tornei</a>
-        <a href="contatti.html">Contatti</a>
     </nav>
 
     <div class="container">
@@ -31,9 +28,9 @@
             <p id="testoAtletaConfermato">Iscrizione confermata. Ora puoi scegliere la data e l'ora per la tua lezione.</p>
         </section>
 
-        <!-- Sezione Tariffe -->
+        <!-- Sezione Tariffe e Regola Pagamento -->
         <section class="card info-card">
-            <h2>💶 Tariffe Lezioni Tennis</h2>
+            <h2>💶 Tariffe & Condizioni di Pagamento</h2>
             <div class="tariffe-grid">
                 <div class="tariffa-item">
                     <h3>Lezione Singola</h3>
@@ -45,6 +42,11 @@
                     <p class="prezzo">15€ a persona / ora</p>
                     <span>Specifica i nomi del gruppo</span>
                 </div>
+            </div>
+
+            <!-- Avviso Pagamento -->
+            <div class="regola-pagamento-box">
+                💳 <strong>Modalità di Pagamento:</strong> Il pagamento delle lezioni deve essere effettuato <strong>in campo direttamente al maestro prima dell'inizio della lezione</strong> (in contanti, Satispay o POS).
             </div>
         </section>
 
@@ -68,16 +70,23 @@
                     <small>Inserisci i nomi separati da virgola</small>
                 </div>
 
-                <!-- Solamente Data e Ora (Senza campo) -->
+                <!-- Solamente Data e Ora (Senza selezione campo) -->
                 <div class="form-group">
                     <label for="dataOrarioDesiderato">Giorno e Orario Desiderato:*</label>
                     <input type="text" id="dataOrarioDesiderato" required placeholder="Es. Giovedì 15 Maggio alle ore 17:30">
                     <small>Scrivi liberamente la data e l'orario in cui vorresti giocare.</small>
                 </div>
 
+                <!-- Spunta Obbligatoria Disdetta -->
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="confermaDisdetta" required>
                     <label for="confermaDisdetta">Accetto la regola della disdetta/spostamento entro almeno 3 giorni prima dell'orario stabilito.</label>
+                </div>
+
+                <!-- Spunta Obbligatoria Pagamento -->
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="confermaPagamento" required>
+                    <label for="confermaPagamento">Accetto di effettuare il pagamento direttamente al maestro prima dell'inizio della lezione.</label>
                 </div>
 
                 <button type="submit" class="btn-telegram">✈️ Invia Richiesta Prenotazione</button>
