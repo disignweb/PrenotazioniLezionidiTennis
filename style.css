@@ -202,4 +202,9 @@ background-color: #c0392b;
 .tariffe-grid {
 flex-direction: column;
 }
+.navbar a.disabled-link {
+    color: #a0a0a0;
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
 }
