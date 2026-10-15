@@ -25,7 +25,7 @@
         <!-- Sezione Regole e Requisiti -->
         <section class="card alert-card">
             <h2>⚠️ Attenzione</h2>
-            <p>Per poter prenotare le lezioni di tennis è **obbligatorio** prima completare la scheda d'iscrizione sottostante e allegare la foto o il PDF del **Certificato Medico** in corso di validità.</p>
+            <p>Per poter prenotare le lezioni di tennis è <strong>obbligatorio</strong> prima completare la scheda d'iscrizione sottostante e allegare la foto o il PDF del <strong>Certificato Medico</strong> in corso di validità.</p>
         </section>
 
         <!-- Modulo Iscrizione Atleta -->
@@ -75,12 +75,18 @@
                     </select>
                 </div>
 
-                <!-- Caricamento Certificato Medico (PDF o Foto) -->
+                <!-- Caricamento Certificato Medico e Data di Scadenza -->
                 <div class="form-group upload-box">
                     <label for="certificatoMedico">📁 Carica Certificato Medico (PDF o Foto dal cellulare):*</label>
                     <input type="file" id="certificatoMedico" accept="image/*,application/pdf" capture="environment" required>
                     <small>Scatta una foto nitida con lo smartphone o seleziona un file PDF.</small>
                     <div id="filePreview" class="file-preview"></div>
+
+                    <div style="margin-top: 15px;">
+                        <label for="scadenzaCertificato">📅 Data di Scadenza del Certificato Medico:*</label>
+                        <input type="date" id="scadenzaCertificato" required>
+                        <small>Inserisci la data di scadenza riportata sul certificato medico.</small>
+                    </div>
                 </div>
 
                 <div class="form-group checkbox-group">
