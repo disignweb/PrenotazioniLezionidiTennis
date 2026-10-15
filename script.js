@@ -5,7 +5,7 @@ const TELEGRAM_BOT_TOKEN = "8735773734:AAHRixPREQqkROnTra7XLiokNdZzul-1xJ8";
 const TELEGRAM_CHAT_ID = "8008704752"; 
 
 // Incolla qui l'URL ottenuto al momento del Deploy del tuo Google Apps Script
-const GOOGLE_SCRIPT_URL = "INCOLLA_QUI_IL_TUO_URL_DI_GOOGLE_APPS_SCRIPT";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/u/0/home/projects/1-n9YE7UcngIBvSDAs5xUh7q7JBK38A_nAhbqc-hrVLTH0Yrw_q06h_cd/edit";
 
 const paginaAttuale = window.location.pathname.split("/").pop();
 
