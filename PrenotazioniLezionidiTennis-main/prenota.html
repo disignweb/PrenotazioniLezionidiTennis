@@ -45,7 +45,7 @@
             </div>
 
             <!-- Avviso Pagamento -->
-            <div class="regola-pagamento-box">
+            <div class="regola-pagamento-box" style="margin-top: 15px; padding: 12px 15px; background-color: #eef9ff; border-left: 4px solid #3498db; border-radius: 6px; font-size: 0.95rem; color: #2c3e50;">
                 💳 <strong>Modalità di Pagamento:</strong> Il pagamento delle lezioni deve essere effettuato <strong>in campo direttamente al maestro prima dell'inizio della lezione</strong> (in contanti, Satispay o POS).
             </div>
         </section>
@@ -103,12 +103,14 @@
             <div id="contenitoreLista">Nessuna prenotazione attiva.</div>
         </section>
 
-    </div>
+        <!-- Pulsante di Configurazione Bot (Visibile e pronto in fondo alla pagina) -->
+        <div style="text-align: center; margin: 30px 0;">
+            <button onclick="configuraBotSicuro()" style="background-color: #34495e; color: white; border: none; padding: 12px 20px; font-size: 15px; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                ⚙️ Configura Bot Telegram
+            </button>
+        </div>
 
-<!-- Pulsante Configurazione Bot Sicura -->
-    <footer class="footer-config">
-        <button class="btn-config" onclick="configuraBotSicuro()">⚙️ Configura Bot Telegram</button>
-    </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>
