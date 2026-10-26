@@ -1,32 +1,23 @@
 // ==========================================
-// CONFIGURAZIONE DINAMICA E SICURA (Nessun dato su GitHub)
+// CONFIGURAZIONE TELEGRAM SICURA (Nessun dato su GitHub)
 // ==========================================
-
-// Recupera le credenziali salvate in precedenza nel browser (se configurate)
 let TELEGRAM_BOT_TOKEN = localStorage.getItem("tennis_bot_token") || "";
 let TELEGRAM_CHAT_ID = localStorage.getItem("tennis_chat_id") || "";
-let GOOGLE_SCRIPT_URL = localStorage.getItem("tennis_google_url") || "";
 
-// Funzione di servizio per configurare il bot la prima volta (inserendo una password di protezione)
+// Funzione per configurare il bot tramite password
 window.configuraBotSicuro = function() {
     const password = prompt("Inserisci la password amministratore per configurare il Bot:");
-    if (password !== "tennis2026") { // Puoi cambiare la password qui se vuoi
+    if (password !== "tennis2026") {
         alert("Password errata!");
         return;
     }
 
     const token = prompt("Inserisci il Telegram Bot Token:", TELEGRAM_BOT_TOKEN);
     const chatId = prompt("Inserisci il Telegram Chat ID:", TELEGRAM_CHAT_ID);
-    const googleUrl = prompt("Inserisci l'URL di Google Apps Script:", GOOGLE_SCRIPT_URL);
 
     if (token && chatId) {
         localStorage.setItem("tennis_bot_token", token);
         localStorage.setItem("tennis_chat_id", chatId);
-        if (googleUrl) localStorage.setItem("tennis_google_url", googleUrl);
-        
-        TELEGRAM_BOT_TOKEN = token;
-        TELEGRAM_CHAT_ID = chatId;
-        GOOGLE_SCRIPT_URL = googleUrl || "";
         
         alert("✅ Configurazione salvata con successo su questo dispositivo!");
         location.reload();
@@ -74,7 +65,7 @@ if (formIscrizione) {
         event.preventDefault();
 
         if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-            alert("⚠️ Attenzione: Il bot non è configurato su questo browser! Clicca sul tasto di configurazione nascosto o contatta l'amministratore.");
+            alert("⚠️ Attenzione: Il bot non è configurato su questo browser! Clicca sul tasto 'Configura Bot Telegram' in fondo alla pagina.");
             return;
         }
 
@@ -108,44 +99,31 @@ if (formIscrizione) {
         };
         localStorage.setItem("iscrizioneAtletaTennis", JSON.stringify(datiAtleta));
 
-        const payloadGoogle = {
-            nome: nome,
-            codiceFiscale: cf,
-            dataNascita: dataNascita,
-            telefono: telefono,
-            email: email,
-            indirizzo: indirizzo,
-            livello: livello,
-            scadenzaCertificato: scadenzaCertificato,
-            scadenzaCertificatoFormatted: dataScadenzaFormattata
-        };
+        // Testo della nuova iscrizione per Telegram
+        const testoMessaggio = 
+            `📋 NUOVA ISCRIZIONE ATLETA\n\n` +
+            `Nome: ${nome}\n` +
+            `Codice Fiscale: ${cf}\n` +
+            `Data Nascita: ${dataNascita}\n` +
+            `Telefono: ${telefono}\n` +
+            `Email: ${email}\n` +
+            `Indirizzo: ${indirizzo}\n` +
+            `Livello: ${livello}\n` +
+            `🚨 SCADENZA CERTIFICATO: ${dataScadenzaFormattata}\n` +
+            `File Certificato: ${fileCertificato.name}`;
 
         try {
-            // A. Invio a Google Sheets (se configurato)
-            if (GOOGLE_SCRIPT_URL) {
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payloadGoogle)
-                });
-            } else {
-                // Notifica testuale di emergenza via Telegram se manca Google Script
-                const testoMessaggio = 
-                    `📋 *NUOVA ISCRIZIONE ATLETA* 📋\n\n` +
-                    `👤 *Nome:* ${nome}\n` +
-                    `🆔 *CF:* ${cf}\n` +
-                    `📞 *Tel:* ${telefono}\n` +
-                    `🚨 *SCADENZA CERTIFICATO:* ${dataScadenzaFormattata}`;
+            // 1. Invio dei dati anagrafici testuali a Telegram
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    chat_id: TELEGRAM_CHAT_ID, 
+                    text: testoMessaggio 
+                })
+            });
 
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: testoMessaggio, parse_mode: "Markdown" })
-                });
-            }
-
-            // B. Invio File Certificato (Foto o PDF) su Telegram
+            // 2. Invio del file (Foto o PDF) del certificato medico a Telegram
             const formData = new FormData();
             formData.append("chat_id", TELEGRAM_CHAT_ID);
 
@@ -169,7 +147,7 @@ if (formIscrizione) {
 
         } catch (error) {
             console.error("Errore:", error);
-            alert("Errore di connessione durante l'invio.");
+            alert("Errore di connessione durante l'invio dei dati.");
         }
     });
 }
@@ -239,47 +217,3 @@ if (formPrenotazione) {
         const orarioDesiderato = document.querySelector("#dataOrarioDesiderato").value;
 
         let prenotazioni = JSON.parse(localStorage.getItem("prenotazioniLezioniTennis")) || [];
-
-        const nuovaPrenotazione = {
-            nomeAtleta: datiAtleta.nome,
-            telefonoAtleta: datiAtleta.telefono,
-            tipo: tipoLezione,
-            partecipanti: altriPartecipanti,
-            orarioDesiderato: orarioDesiderato
-        };
-
-        prenotazioni.push(nuovaPrenotazione);
-        localStorage.setItem("prenotazioniLezioniTennis", JSON.stringify(prenotazioni));
-
-        let testoPartecipanti = tipoLezione === "Gruppo" ? `\n👥 *Altri Partecipanti:* ${altriPartecipanti}` : '';
-        let costo = tipoLezione === "Singola" ? "30€" : "15€ a persona";
-
-        const testoMessaggio = 
-            `🎾 *NUOVA PRENOTAZIONE LEZIONE* 🎾\n\n` +
-            `👤 *Atleta:* ${datiAtleta.nome}\n` +
-            `📞 *Telefono:* ${datiAtleta.telefono}\n` +
-            `📖 *Tipo Lezione:* ${tipoLezione} (${costo})${testoPartecipanti}\n` +
-            `⏰ *Giorno e Ora Desiderati:* ${orarioDesiderato}\n` +
-            `💶 *Pagamento:* Diretto al maestro prima della lezione`;
-
-        try {
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: testoMessaggio, parse_mode: "Markdown" })
-            });
-
-            alertMessaggio.style.display = "block";
-            setTimeout(() => { alertMessaggio.style.display = "none"; }, 4000);
-            formPrenotazione.reset();
-            gruppoPartecipanti.style.display = "none";
-            caricaPrenotazioni();
-
-        } catch (error) {
-            console.error("Errore:", error);
-            alert("Errore nell'invio della prenotazione.");
-        }
-    });
-
-    caricaPrenotazioni();
-}
