@@ -1,11 +1,39 @@
 // ==========================================
-// CONFIGURAZIONE TELEGRAM BOT & GOOGLE SHEETS
+// CONFIGURAZIONE DINAMICA E SICURA (Nessun dato su GitHub)
 // ==========================================
-const TELEGRAM_BOT_TOKEN = "8735773734:AAHRixPREQqkROnTra7XLiokNdZzul-1xJ8"; 
-const TELEGRAM_CHAT_ID = "8008704752"; 
 
-// Incolla qui l'URL ottenuto al momento del Deploy del tuo Google Apps Script
-const GOOGLE_SCRIPT_URL = "https://script.google.com/u/0/home/projects/1-n9YE7UcngIBvSDAs5xUh7q7JBK38A_nAhbqc-hrVLTH0Yrw_q06h_cd/edit";
+// Recupera le credenziali salvate in precedenza nel browser (se configurate)
+let TELEGRAM_BOT_TOKEN = localStorage.getItem("tennis_bot_token") || "";
+let TELEGRAM_CHAT_ID = localStorage.getItem("tennis_chat_id") || "";
+let GOOGLE_SCRIPT_URL = localStorage.getItem("tennis_google_url") || "";
+
+// Funzione di servizio per configurare il bot la prima volta (inserendo una password di protezione)
+window.configuraBotSicuro = function() {
+    const password = prompt("Inserisci la password amministratore per configurare il Bot:");
+    if (password !== "tennis2026") { // Puoi cambiare la password qui se vuoi
+        alert("Password errata!");
+        return;
+    }
+
+    const token = prompt("Inserisci il Telegram Bot Token:", TELEGRAM_BOT_TOKEN);
+    const chatId = prompt("Inserisci il Telegram Chat ID:", TELEGRAM_CHAT_ID);
+    const googleUrl = prompt("Inserisci l'URL di Google Apps Script:", GOOGLE_SCRIPT_URL);
+
+    if (token && chatId) {
+        localStorage.setItem("tennis_bot_token", token);
+        localStorage.setItem("tennis_chat_id", chatId);
+        if (googleUrl) localStorage.setItem("tennis_google_url", googleUrl);
+        
+        TELEGRAM_BOT_TOKEN = token;
+        TELEGRAM_CHAT_ID = chatId;
+        GOOGLE_SCRIPT_URL = googleUrl || "";
+        
+        alert("✅ Configurazione salvata con successo su questo dispositivo!");
+        location.reload();
+    } else {
+        alert("Configurazione annullata o incompleta.");
+    }
+};
 
 const paginaAttuale = window.location.pathname.split("/").pop();
 
@@ -15,7 +43,6 @@ const paginaAttuale = window.location.pathname.split("/").pop();
 if (paginaAttuale === "prenota.html" || paginaAttuale.endsWith("prenota.html")) {
     const datiAtleta = JSON.parse(localStorage.getItem("iscrizioneAtletaTennis"));
     
-    // Se l'atleta non ha ancora completato l'iscrizione, lo rimanda alla pagina 1
     if (!datiAtleta) {
         alert("⚠️ Per accedere alla prenotazione delle lezioni devi PRIMA compilare la scheda di iscrizione e allegare il certificato medico!");
         window.location.href = "index.html";
@@ -36,7 +63,6 @@ if (formIscrizione) {
     const filePreview = document.querySelector("#filePreview");
     const alertMessaggio = document.querySelector("#alertMessaggio");
 
-    // Mostra l'anteprima del nome file / foto selezionata
     certificatoInput.addEventListener("change", function() {
         if (certificatoInput.files && certificatoInput.files[0]) {
             const file = certificatoInput.files[0];
@@ -47,6 +73,11 @@ if (formIscrizione) {
     formIscrizione.addEventListener("submit", async function(event) {
         event.preventDefault();
 
+        if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+            alert("⚠️ Attenzione: Il bot non è configurato su questo browser! Clicca sul tasto di configurazione nascosto o contatta l'amministratore.");
+            return;
+        }
+
         const nome = document.querySelector("#nomeAtleta").value;
         const cf = document.querySelector("#codiceFiscale").value.toUpperCase();
         const dataNascita = document.querySelector("#dataNascita").value;
@@ -54,7 +85,7 @@ if (formIscrizione) {
         const email = document.querySelector("#email").value;
         const indirizzo = document.querySelector("#indirizzo").value;
         const livello = document.querySelector("#livelloTennis").value;
-        const scadenzaCertificato = document.querySelector("#scadenzaCertificato").value; // Formato YYYY-MM-DD
+        const scadenzaCertificato = document.querySelector("#scadenzaCertificato").value;
         const fileCertificato = certificatoInput.files[0];
 
         if (!fileCertificato) {
@@ -62,10 +93,8 @@ if (formIscrizione) {
             return;
         }
 
-        // Formattazione data di scadenza per la visualizzazione (GG/MM/AAAA)
         const dataScadenzaFormattata = scadenzaCertificato.split('-').reverse().join('/');
 
-        // Salvataggio dei dati dell'atleta nel LocalStorage per sbloccare prenota.html
         const datiAtleta = {
             nome: nome,
             codiceFiscale: cf,
@@ -79,7 +108,6 @@ if (formIscrizione) {
         };
         localStorage.setItem("iscrizioneAtletaTennis", JSON.stringify(datiAtleta));
 
-        // Preparazione Dati per Google Apps Script (Foglio Google per promemoria scadenze)
         const payloadGoogle = {
             nome: nome,
             codiceFiscale: cf,
@@ -93,8 +121,8 @@ if (formIscrizione) {
         };
 
         try {
-            // A. Invio dei dati a Google Sheets per il salvataggio e il controllo futuro della scadenza
-            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "INCOLLA_QUI_IL_TUO_URL_DI_GOOGLE_APPS_SCRIPT") {
+            // A. Invio a Google Sheets (se configurato)
+            if (GOOGLE_SCRIPT_URL) {
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: "POST",
                     mode: "no-cors",
@@ -102,18 +130,13 @@ if (formIscrizione) {
                     body: JSON.stringify(payloadGoogle)
                 });
             } else {
-                // Invio di emergenza via Telegram se Google Script non è stato ancora configurato
+                // Notifica testuale di emergenza via Telegram se manca Google Script
                 const testoMessaggio = 
                     `📋 *NUOVA ISCRIZIONE ATLETA* 📋\n\n` +
                     `👤 *Nome:* ${nome}\n` +
-                    `🆔 *Codice Fiscale:* ${cf}\n` +
-                    `📅 *Data Nascita:* ${dataNascita}\n` +
-                    `📞 *Telefono:* ${telefono}\n` +
-                    `✉️ *Email:* ${email}\n` +
-                    `🏠 *Indirizzo:* ${indirizzo}\n` +
-                    `🎾 *Livello:* ${livello}\n` +
-                    `🚨 *SCADENZA CERTIFICATO MEDICO:* ${dataScadenzaFormattata}\n` +
-                    `📄 *Certificato:* ${fileCertificato.name}`;
+                    `🆔 *CF:* ${cf}\n` +
+                    `📞 *Tel:* ${telefono}\n` +
+                    `🚨 *SCADENZA CERTIFICATO:* ${dataScadenzaFormattata}`;
 
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: "POST",
@@ -122,7 +145,7 @@ if (formIscrizione) {
                 });
             }
 
-            // B. Invio File Certificato Medico (Foto o PDF) direttamente al Bot Telegram
+            // B. Invio File Certificato (Foto o PDF) su Telegram
             const formData = new FormData();
             formData.append("chat_id", TELEGRAM_CHAT_ID);
 
@@ -139,15 +162,14 @@ if (formIscrizione) {
                 body: formData
             });
 
-            // Feedback visivo e reindirizzamento alla pagina delle prenotazioni
             alertMessaggio.style.display = "block";
             setTimeout(() => {
                 window.location.href = "prenota.html";
             }, 2000);
 
         } catch (error) {
-            console.error("Errore durante l'invio:", error);
-            alert("Si è verificato un errore di connessione. Verifica la tua rete e riprova.");
+            console.error("Errore:", error);
+            alert("Errore di connessione durante l'invio.");
         }
     });
 }
@@ -162,7 +184,6 @@ if (formPrenotazione) {
     const alertMessaggio = document.querySelector("#alertMessaggio");
     const contenitoreLista = document.querySelector("#contenitoreLista");
 
-    // Gestione visibilità campo partecipanti per lezioni di gruppo
     tipoLezioneSelect.addEventListener("change", function() {
         if (tipoLezioneSelect.value === "Gruppo") {
             gruppoPartecipanti.style.display = "block";
@@ -171,7 +192,6 @@ if (formPrenotazione) {
         }
     });
 
-    // Caricamento storico prenotazioni nel browser
     function caricaPrenotazioni() {
         let prenotazioni = JSON.parse(localStorage.getItem("prenotazioniLezioniTennis")) || [];
 
@@ -198,7 +218,6 @@ if (formPrenotazione) {
         });
     }
 
-    // Eliminazione prenotazione salvata in locale
     window.eliminaPrenotazione = function(index) {
         let prenotazioni = JSON.parse(localStorage.getItem("prenotazioniLezioniTennis")) || [];
         prenotazioni.splice(index, 1);
@@ -206,9 +225,13 @@ if (formPrenotazione) {
         caricaPrenotazioni();
     };
 
-    // Invio Prenotazione
     formPrenotazione.addEventListener("submit", async function(event) {
         event.preventDefault();
+
+        if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+            alert("⚠️ Attenzione: Il bot non è configurato su questo browser!");
+            return;
+        }
 
         const datiAtleta = JSON.parse(localStorage.getItem("iscrizioneAtletaTennis"));
         const tipoLezione = tipoLezioneSelect.value;
@@ -253,8 +276,8 @@ if (formPrenotazione) {
             caricaPrenotazioni();
 
         } catch (error) {
-            console.error("Errore nell'invio della prenotazione:", error);
-            alert("Errore nell'invio della prenotazione. Verifica la connessione internet.");
+            console.error("Errore:", error);
+            alert("Errore nell'invio della prenotazione.");
         }
     });
 
