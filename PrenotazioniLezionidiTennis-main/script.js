@@ -1,33 +1,8 @@
 // ==========================================
-// CONFIGURAZIONE AMMINISTRATORE SICURA (Nessun dato su GitHub)
+// CONFIGURAZIONE TELEGRAM SICURA (Da localStorage)
 // ==========================================
 let TELEGRAM_BOT_TOKEN = localStorage.getItem("tennis_bot_token") || "";
 let TELEGRAM_CHAT_ID = localStorage.getItem("tennis_chat_id") || "";
-
-// Funzione amministratore per configurare il bot protetta da password
-window.configuraBotSicuro = function() {
-    const password = prompt("Inserisci la password amministratore per configurare il Bot:");
-    if (password !== "tennis2026") {
-        alert("Password errata!");
-        return;
-    }
-
-    const token = prompt("Inserisci il Telegram Bot Token:", TELEGRAM_BOT_TOKEN);
-    const chatId = prompt("Inserisci il Telegram Chat ID:", TELEGRAM_CHAT_ID);
-
-    if (token && chatId) {
-        localStorage.setItem("tennis_bot_token", token);
-        localStorage.setItem("tennis_chat_id", chatId);
-        
-        TELEGRAM_BOT_TOKEN = token;
-        TELEGRAM_CHAT_ID = chatId;
-
-        alert("✅ Configurazione salvata con successo su questo dispositivo!");
-        location.reload();
-    } else {
-        alert("Configurazione annullata o incompleta.");
-    }
-};
 
 const paginaAttuale = window.location.pathname.split("/").pop();
 
@@ -67,8 +42,12 @@ if (formIscrizione) {
     formIscrizione.addEventListener("submit", async function(event) {
         event.preventDefault();
 
+        // Aggiorna i token da localStorage al momento dell'invio
+        TELEGRAM_BOT_TOKEN = localStorage.getItem("tennis_bot_token") || "";
+        TELEGRAM_CHAT_ID = localStorage.getItem("tennis_chat_id") || "";
+
         if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-            alert("⚠️ Attenzione: Il bot non è configurato su questo browser! Clicca sul tasto '⚙️ Configura Bot Telegram' in fondo alla pagina e inserisci la password.");
+            alert("⚠️ Attenzione: Il bot non è configurato su questo browser! Clicca sul tasto '⚙️ Configura Bot Telegram' in fondo alla pagina.");
             return;
         }
 
@@ -115,17 +94,12 @@ if (formIscrizione) {
             `File Certificato: ${fileCertificato.name}`;
 
         try {
-            // 1. Invio dei dati anagrafici testuali a Telegram
             await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    chat_id: TELEGRAM_CHAT_ID, 
-                    text: testoMessaggio 
-                })
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: testoMessaggio })
             });
 
-            // 2. Invio del file (Foto o PDF) del certificato medico a Telegram
             const formData = new FormData();
             formData.append("chat_id", TELEGRAM_CHAT_ID);
 
@@ -208,8 +182,11 @@ if (formPrenotazione) {
     formPrenotazione.addEventListener("submit", async function(event) {
         event.preventDefault();
 
+        TELEGRAM_BOT_TOKEN = localStorage.getItem("tennis_bot_token") || "";
+        TELEGRAM_CHAT_ID = localStorage.getItem("tennis_chat_id") || "";
+
         if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-            alert("⚠️ Attenzione: Il bot non è configurato su questo browser! Clicca sul tasto di configurazione in fondo alla pagina.");
+            alert("⚠️ Attenzione: Il bot non è configurato su questo browser!");
             return;
         }
 
@@ -246,10 +223,7 @@ if (formPrenotazione) {
             await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    chat_id: TELEGRAM_CHAT_ID, 
-                    text: testoMessaggio 
-                })
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: testoMessaggio })
             });
 
             alertMessaggio.style.display = "block";
