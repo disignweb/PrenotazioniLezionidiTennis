@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Class - Passaggio 1: Iscrizione Atleta 🎾</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Intestazione -->
+    <header class="header-club">
+        <h1>🎾 Tennis Class</h1>
+        <p>Passaggio 1 di 2: Compilazione Dati & Certificato Medico</p>
+    </header>
+
+    <!-- Navbar con stato di avanzamento -->
+    <nav class="navbar">
+        <a href="index.html" class="active">1. Iscrizione Atleta (Obbligatoria)</a>
+        <a href="#" class="disabled-link" title="Completa prima l'iscrizione">2. Prenota Lezione 🔒</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Sezione Regole e Requisiti -->
+        <section class="card alert-card">
+            <h2>⚠️ Attenzione</h2>
+            <p>Per poter prenotare le lezioni di tennis è <strong>obbligatorio</strong> prima completare la scheda d'iscrizione sottostante e allegare la foto o il PDF del <strong>Certificato Medico</strong> in corso di validità.</p>
+        </section>
+
+        <!-- Modulo Iscrizione Atleta -->
+        <section class="card form-card">
+            <h2>👤 Scheda Dati Anagrafici Atleta</h2>
+            <form id="formIscrizione">
+                
+                <div class="form-group">
+                    <label for="nomeAtleta">Nome e Cognome Atleta:*</label>
+                    <input type="text" id="nomeAtleta" required placeholder="Es. Mario Rossi">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="codiceFiscale">Codice Fiscale:*</label>
+                        <input type="text" id="codiceFiscale" required placeholder="Es. RSSMRA80A01H501U" style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-group col">
+                        <label for="dataNascita">Data di Nascita:*</label>
+                        <input type="date" id="dataNascita" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="telefono">Numero di Telefono / WhatsApp:*</label>
+                        <input type="tel" id="telefono" required placeholder="Es. 333 1234567">
+                    </div>
+                    <div class="form-group col">
+                        <label for="email">Indirizzo Email:*</label>
+                        <input type="email" id="email" required placeholder="Es. mario.rossi@email.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="indirizzo">Indirizzo di Residenza:*</label>
+                    <input type="text" id="indirizzo" required placeholder="Via, Civico, Città, CAP">
+                </div>
+
+                <div class="form-group">
+                    <label for="livelloTennis">Livello di Gioco:*</label>
+                    <select id="livelloTennis" required>
+                        <option value="">-- Seleziona Livello --</option>
+                        <option value="Principiante Assoluto">Principiante Assoluto</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Avanzato / Agonista">Avanzato / Agonista</option>
+                    </select>
+                </div>
+
+                <!-- Caricamento Certificato Medico e Data di Scadenza -->
+                <div class="form-group upload-box">
+                    <label for="certificatoMedico">📁 Carica Certificato Medico (PDF o Foto dal cellulare):*</label>
+                    <input type="file" id="certificatoMedico" accept="image/*,application/pdf" capture="environment" required>
+                    <small>Scatta una foto nitida con lo smartphone o seleziona un file PDF.</small>
+                    <div id="filePreview" class="file-preview"></div>
+
+                    <div style="margin-top: 15px;">
+                        <label for="scadenzaCertificato">📅 Data di Scadenza del Certificato Medico:*</label>
+                        <input type="date" id="scadenzaCertificato" required>
+                        <small>Inserisci la data di scadenza riportata sul certificato medico.</small>
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="consensoPrivacy" required>
+                    <label for="consensoPrivacy">Dichiaro che i dati forniti e il certificato allegato sono veritieri ed esatti. Autorizzo il trattamento dei dati personali.</label>
+                </div>
+
+                <button type="submit" class="btn-telegram">🚀 Invia Iscrizione e Vai alla Prenotazione ➡️</button>
+            </form>
+
+            <div id="alertMessaggio" class="messaggio" style="display: none;">
+                ✅ Iscrizione inviata con successo! Reindirizzamento alla pagina prenotazioni in corso...
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

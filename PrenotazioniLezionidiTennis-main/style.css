@@ -1,0 +1,219 @@
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background-color: #f0f4ec;
+margin: 0;
+padding: 0 0 40px 0;
+color: #2c3e50;
+}
+
+.header-club {
+background: linear-gradient(135deg, #1e824c, #27ae60);
+color: white;
+text-align: center;
+padding: 35px 20px;
+margin-bottom: 25px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.header-club h1 {
+margin: 0;
+font-size: 32px;
+}
+
+.header-club p {
+margin: 5px 0 0 0;
+opacity: 0.9;
+}
+
+.container {
+max-width: 750px;
+margin: 0 auto;
+padding: 0 15px;
+}
+
+.card {
+background: white;
+padding: 25px;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+margin-bottom: 25px;
+}
+
+.alert-card {
+border-left: 6px solid #e67e22;
+background-color: #fef9e7;
+}
+
+.alert-card h2 {
+color: #d35400;
+margin-top: 0;
+font-size: 20px;
+}
+
+.alert-card ul {
+margin: 0;
+padding-left: 20px;
+line-height: 1.6;
+}
+
+.info-card h2, .form-card h2 {
+margin-top: 0;
+color: #1e824c;
+font-size: 22px;
+}
+
+.tariffe-grid {
+display: flex;
+gap: 15px;
+}
+
+.tariffa-item {
+flex: 1;
+background: #f4f9f5;
+padding: 15px;
+border-radius: 8px;
+border: 1px solid #d4edda;
+text-align: center;
+}
+
+.tariffa-item h3 {
+margin: 0 0 5px 0;
+color: #27ae60;
+}
+
+.tariffa-item .prezzo {
+font-size: 18px;
+margin: 0 0 5px 0;
+font-weight: bold;
+color: #2c3e50;
+}
+
+.tariffa-item span {
+font-size: 13px;
+color: #7f8c8d;
+}
+
+.form-group {
+margin-bottom: 18px;
+}
+
+.form-group small {
+display: block;
+margin-top: 4px;
+color: #7f8c8d;
+font-size: 12px;
+}
+
+label {
+display: block;
+margin-bottom: 8px;
+font-weight: bold;
+color: #34495e;
+}
+
+input[type="text"], input[type="tel"], select {
+width: 100%;
+padding: 12px;
+border: 1px solid #ccc;
+border-radius: 6px;
+box-sizing: border-box;
+font-size: 16px;
+}
+
+.checkbox-group {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+}
+
+.checkbox-group input {
+margin-top: 4px;
+width: 18px;
+height: 18px;
+}
+
+.checkbox-group label {
+font-weight: normal;
+font-size: 14px;
+color: #555;
+line-height: 1.4;
+}
+
+.btn-telegram {
+background-color: #0088cc;
+color: white;
+border: none;
+padding: 14px 20px;
+font-size: 17px;
+border-radius: 6px;
+cursor: pointer;
+width: 100%;
+font-weight: bold;
+transition: background 0.2s;
+}
+
+.btn-telegram:hover {
+background-color: #006699;
+}
+
+.messaggio {
+margin-top: 15px;
+padding: 12px;
+background-color: #d4edda;
+color: #155724;
+border: 1px solid #c3e6cb;
+border-radius: 6px;
+text-align: center;
+font-weight: bold;
+}
+
+.lista-prenotazioni h3 {
+margin-top: 0;
+}
+
+.item-prenotazione {
+background: #fdfefe;
+padding: 12px 15px;
+margin-bottom: 10px;
+border-radius: 6px;
+border-left: 5px solid #0088cc;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border: 1px solid #eee;
+}
+
+.btn-cancella {
+background-color: #e74c3c;
+color: white;
+border: none;
+padding: 6px 12px;
+border-radius: 4px;
+cursor: pointer;
+font-size: 12px;
+width: auto;
+}
+
+.btn-cancella:hover {
+background-color: #c0392b;
+}
+
+@media (max-width: 600px) {
+.tariffe-grid {
+flex-direction: column;
+}
+.navbar a.disabled-link {
+    color: #a0a0a0;
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.regola-pagamento-box {
+    margin-top: 15px;
+    padding: 12px 15px;
+    background-color: #eef9ff;
+    border-left: 4px solid #3498db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #2c3e50;
