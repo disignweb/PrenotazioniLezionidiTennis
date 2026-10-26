@@ -1,10 +1,10 @@
 // ==========================================
-// CONFIGURAZIONE TELEGRAM SICURA (Nessun dato su GitHub)
+// CONFIGURAZIONE AMMINISTRATORE SICURA (Nessun dato su GitHub)
 // ==========================================
 let TELEGRAM_BOT_TOKEN = localStorage.getItem("tennis_bot_token") || "";
 let TELEGRAM_CHAT_ID = localStorage.getItem("tennis_chat_id") || "";
 
-// Funzione per configurare il bot tramite password
+// Funzione amministratore per configurare il bot protetta da password
 window.configuraBotSicuro = function() {
     const password = prompt("Inserisci la password amministratore per configurare il Bot:");
     if (password !== "tennis2026") {
@@ -19,6 +19,9 @@ window.configuraBotSicuro = function() {
         localStorage.setItem("tennis_bot_token", token);
         localStorage.setItem("tennis_chat_id", chatId);
         
+        TELEGRAM_BOT_TOKEN = token;
+        TELEGRAM_CHAT_ID = chatId;
+
         alert("✅ Configurazione salvata con successo su questo dispositivo!");
         location.reload();
     } else {
@@ -65,7 +68,7 @@ if (formIscrizione) {
         event.preventDefault();
 
         if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-            alert("⚠️ Attenzione: Il bot non è configurato su questo browser! Clicca sul tasto 'Configura Bot Telegram' in fondo alla pagina.");
+            alert("⚠️ Attenzione: Il bot non è configurato su questo browser! Clicca sul tasto '⚙️ Configura Bot Telegram' in fondo alla pagina e inserisci la password.");
             return;
         }
 
@@ -99,7 +102,6 @@ if (formIscrizione) {
         };
         localStorage.setItem("iscrizioneAtletaTennis", JSON.stringify(datiAtleta));
 
-        // Testo della nuova iscrizione per Telegram
         const testoMessaggio = 
             `📋 NUOVA ISCRIZIONE ATLETA\n\n` +
             `Nome: ${nome}\n` +
@@ -207,7 +209,7 @@ if (formPrenotazione) {
         event.preventDefault();
 
         if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-            alert("⚠️ Attenzione: Il bot non è configurato su questo browser!");
+            alert("⚠️ Attenzione: Il bot non è configurato su questo browser! Clicca sul tasto di configurazione in fondo alla pagina.");
             return;
         }
 
@@ -217,3 +219,50 @@ if (formPrenotazione) {
         const orarioDesiderato = document.querySelector("#dataOrarioDesiderato").value;
 
         let prenotazioni = JSON.parse(localStorage.getItem("prenotazioniLezioniTennis")) || [];
+
+        const nuvapr = {
+            nomeAtleta: datiAtleta.nome,
+            telefonoAtleta: datiAtleta.telefono,
+            tipo: tipoLezione,
+            partecipanti: altriPartecipanti,
+            orarioDesiderato: orarioDesiderato
+        };
+
+        prenotazioni.push(nuvapr);
+        localStorage.setItem("prenotazioniLezioniTennis", JSON.stringify(prenotazioni));
+
+        let testoPartecipanti = tipoLezione === "Gruppo" ? `\nAltri Partecipanti: ${altriPartecipanti}` : '';
+        let costo = tipoLezione === "Singola" ? "30€" : "15€ a persona";
+
+        const testoMessaggio = 
+            `🎾 NUOVA PRENOTAZIONE LEZIONE\n\n` +
+            `Atleta: ${datiAtleta.nome}\n` +
+            `Telefono: ${datiAtleta.telefono}\n` +
+            `Tipo Lezione: ${tipoLezione} (${costo})${testoPartecipanti}\n` +
+            `Giorno e Ora Desiderati: ${orarioDesiderato}\n` +
+            `Pagamento: Diretto al maestro prima della lezione`;
+
+        try {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    chat_id: TELEGRAM_CHAT_ID, 
+                    text: testoMessaggio 
+                })
+            });
+
+            alertMessaggio.style.display = "block";
+            setTimeout(() => { alertMessaggio.style.display = "none"; }, 4000);
+            formPrenotazione.reset();
+            gruppoPartecipanti.style.display = "none";
+            caricaPrenotazioni();
+
+        } catch (error) {
+            console.error("Errore:", error);
+            alert("Errore nell'invio della prenotazione.");
+        }
+    });
+
+    caricaPrenotazioni();
+}
